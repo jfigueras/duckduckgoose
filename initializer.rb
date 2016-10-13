@@ -12,10 +12,10 @@ class Initializer
 
   def call
     num_players = _decide_number_of_players
-    order_players = _sort_players(num_players)
-    first_player = _decide_first_player(num_players, order_players)
+    players = _sort_players(num_players)
+    first_player = _decide_first_player(players)
 
-    { num_players: num_players, order_players: order_players, first_player: first_player }
+    { num_players: num_players, first_player: first_player }
   
   end  
 
@@ -23,15 +23,17 @@ class Initializer
   attr_reader :player
 
   def _decide_number_of_players
-    10
+    puts "How many players are in this game? (1-100 ...and press enter)"
+    num_players = gets
+    num_players = num_players.chomp.to_i
   end  
 
   def _sort_players num_players
-    [10,9,8,7,6,5,4,3,2,1]
+    players = Array(1..num_players)
   end
 
-  def _decide_first_player(num_players, order_players)
-    5
+  def _decide_first_player(players)
+    players.sample
   end  
 
 end

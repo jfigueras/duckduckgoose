@@ -6,12 +6,13 @@ class Player
 
   attr_reader :name, :gamerun
 
-  def initialize(name:, gamerun:, strategy: Strategy, race: Race)
+  def initialize(name:, gamerun:, num_players:, strategy: Strategy, race: Race)
 
     @name = name
     @gamerun = gamerun
     @strategy = strategy
     @race = race
+    @num_players = num_players
 
   end
 
@@ -23,7 +24,7 @@ class Player
   end
 
   private
-  attr_reader  :name, :strategy, :race, :gamerun
+  attr_reader  :name, :strategy, :race, :gamerun, :num_players
 
   def _be_the_it
     it = name
@@ -32,7 +33,7 @@ class Player
   end
 
   def _pick_the_goose
-    goose = strategy.new(it: name).call
+    goose = strategy.new(it: name, num_players: num_players).call
     puts "the IT picked the player #{goose} to be the goose"
     goose
   end  
@@ -66,10 +67,10 @@ class Player
   def _one_more_run(result)
     if result[:goose_tag_it] == true
       new_it = result[:it]
-      player = Player.new( name: "#{new_it}", gamerun: gamerun+1 ).call
+      player = Player.new( name: "#{new_it}", gamerun: gamerun+1, num_players: num_players ).call
     else
       new_it = result[:goose]
-      player = Player.new( name: "#{new_it}", gamerun: gamerun+1 ).call
+      player = Player.new( name: "#{new_it}", gamerun: gamerun+1, num_players: num_players ).call
     end
   end  
 end  

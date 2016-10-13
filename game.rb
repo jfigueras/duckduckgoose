@@ -2,43 +2,30 @@ require_relative 'Player'
 require_relative 'initializer.rb'
 
 
-init = Initializer.new.call
+class Game
 
-numplayer = init[:num_players]
-firstplayer = init[:first_player]
+  def initialize
 
-players = Array.new
-
-player = Player.new(
-      name: "5", 
-      gamerun: 0
-      ).call
-
-
-
-
-#(1..numplayer).each do |iterator|
+  end
   
-#  if iterator == firstplayer
-#    player = Player.new(
-#      name: "#{iterator}"
-#      ).call
+  def call
+    init = _game_initializer
+    _ask_first_player_to_start_the_game(init[:first_player], init[:num_players])
+  end  
 
-#  else
-#    player = Player.new(
-#      name: "#{iterator}"
-#      ).call
-#  end 
-#    players.concat([player])
-#end
+private
 
+  def _ask_first_player_to_start_the_game(id, num_players)
+    player = Player.new(
+      name: id, 
+      gamerun: 0,
+      num_players: num_players
+      ).call
+  end  
 
+  def _game_initializer
+    init = Initializer.new.call
+  end  
+end
 
-
-
-
-
-
-
-
-
+Game.new.call
