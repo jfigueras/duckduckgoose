@@ -1,25 +1,27 @@
 require_relative 'Player'
 require_relative 'initializer.rb'
+require_relative 'run_controller'
 
 
 class Game
 
-  def initialize
-
+  def initialize(run_controller: RunController)
+    @run_controller = run_controller
   end
   
   def call
     init = _game_initializer
-    _ask_first_player_to_start_the_game(init[:first_player], init[:num_players])
+    _run_controller(init[:first_player], init[:num_players])
+   
   end  
 
 private
+attr_reader :run_controller
 
-  def _ask_first_player_to_start_the_game(id, num_players)
-    player = Player.new(
-      name: id, 
-      gamerun: 0,
-      num_players: num_players
+  def _run_controller(first_player, numplayer)
+    run_controller.new(
+      player1: first_player,
+      numplayer: numplayer
       ).call
   end  
 

@@ -3,7 +3,7 @@ class Race
 
 attr_reader :it, :goose
 
-  def initialize( it:, goose:)
+  def initialize( it: it, goose: goose)
     @it = it
     @goose = goose
     
