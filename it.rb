@@ -22,25 +22,13 @@ class It
   end  
 
   def play
-    @speed = rand(1000)/100
-    puts "the it runs at #{speed}"
+    @speed = rand()*10
+    puts "the it runs at #{@speed.round(2)}"
   end  
 
   
   private
-  attr_reader  :strategy, :race, :gamerun, :num_players
+  
  
-
-  def _be_the_it(it)
-    
-    puts "player #{it.name} is the #{it.role}"
-    it
-  end
-
-  def _pick_the_goose
-
-    rand(1000)/100
-   
-  end  
-
+  
 end  

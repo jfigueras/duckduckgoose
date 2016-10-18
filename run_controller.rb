@@ -5,47 +5,47 @@ class RunController
 
   attr_reader :player1, :numplayer, :it, :goose_id
 
-  def initialize( player1: player1, numplayer: numplayer, it: It, goose: Goose, player: Player )
+  def initialize( player1: player1, numplayer: numplayer, it_class: It, goose_class: Goose, player_class: Player )
   
     @player1 = player1,
     @numplayer = numplayer || 10,
-    @player = Player,
-    @it = It,
-    @goose = Goose
-    #@players = [ player.new(name: 0), it.new(name: 1), goose.new(name: 2), player.new(name: 3) ] 
+    @player = player_class,
+    @it = it_class,
+    @goose = goose_class
     @players = _create_players player1, numplayer
+    #@players = [ player.new(name: 0), it.new(name: 1), goose.new(name: 2), player.new(name: 3) ] 
   end
 
   def call
     
- (1..25).each do |i|
+    (1..25).each do |i|
+      
 
-    puts "********* begining round #{i} ********" 
+      puts "********* begining round #{i} ********" 
 
-    players = _get_players
+      players = _get_players
+      players.map do |player|
+        player.introduction
+      end  
+     
+      players.map do |player|
+        player.play
+      end  
 
-    players.map do |player|
-      player.introduction
-    end  
-   
-    players.map do |player|
-      player.play
-    end  
-
-    speeds = _get_speeds_and_id(players)
-    newroles = _set_new_roles(speeds)
-    _create_players(newroles[:new_it_id] , numplayer)
-    _sort_players(speeds[:it_id], numplayer)
-   
-end
-    
+      speeds = _get_speeds_and_id(players)
+      newroles = _set_new_roles(speeds)
+      _create_players(newroles[:new_it_id] , numplayer)
+      _sort_players(speeds[:it_id], numplayer)
+     
+    end
   end  
   
   private
-  attr_reader  :player, :it, :goose
+  attr_reader  :player, :it, :goose, :players
+  attr_writer :players 
 
   def _get_players
-    @players
+    players
   end  
 
   def _get_speeds_and_id(players)
@@ -102,7 +102,7 @@ end
     if it_id != 0 
       playerstmp1 = @players[it_id, numplayer]
       playerstmp2 = @players[0, it_id]
-      @players = [ playerstmp1, playerstmp2 ].flatten
+      players = [ playerstmp1, playerstmp2 ].flatten
     end
   end  
 

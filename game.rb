@@ -7,8 +7,9 @@ require 'byebug'
 
 class Game
 
-  def initialize(run_controller: RunController)
+  def initialize(run_controller: RunController, initializer_class: Initializer.new)
     @run_controller = run_controller
+    @initializer = initializer_class
   end
   
   def call
@@ -19,10 +20,9 @@ class Game
   end  
 
 private
-attr_reader :run_controller
+attr_reader :run_controller, :initializer
 
   def _run_controller(first_player, numplayer)
-
     run_controller.new(
       player1: first_player,
       numplayer: numplayer
@@ -30,7 +30,7 @@ attr_reader :run_controller
   end  
 
   def _game_initializer
-    init = Initializer.new.call
+    initializer.call
   end  
 end
 
