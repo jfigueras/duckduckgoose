@@ -1,13 +1,14 @@
 
 class It 
 
-  attr_reader :name, :speed
+  attr_reader :name, :speed, :goose
   attr_writer :speed 
 
   def initialize(name: name )
 
     @name = name
     @speed = 8
+    @goose = rand()
     
   end
 
@@ -17,6 +18,7 @@ class It
 
   def introduction
     puts "player #{name} is the IT"
+
   end  
 
   def play
@@ -37,9 +39,8 @@ class It
 
   def _pick_the_goose
 
-    goose = strategy.new(it: name, num_players: num_players).call
-    puts "the IT picked the player #{goose} to be the goose"
-    goose
+    rand(1000)/100
+   
   end  
 
 end  

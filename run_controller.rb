@@ -3,39 +3,39 @@
 
 class RunController
 
-  attr_reader :race, :player1, :first_player, :it, :goose_id
+  attr_reader :player1, :numplayer, :it, :goose_id
 
   def initialize( player1: player1, numplayer: numplayer, it: It, goose: Goose, player: Player )
   
     @player1 = player1,
-    @numplayer = numplayer,
+    @numplayer = numplayer || 10,
     @player = Player,
     @it = It,
     @goose = Goose
-    @players = [ player.new(name: 1), it.new(name: 2), goose.new(name: 3), player.new(name: 4) ] 
+    @players = [ player.new(name: 0), it.new(name: 1), goose.new(name: 2), player.new(name: 3) ] 
   end
 
   def call
     
- (1..25).each do 
+ (1..25).each do |i|
+
+    puts "********* begining round #{i} ********" 
 
     players = _get_players
 
     players.map do |player|
       player.introduction
     end  
-
+   
     players.map do |player|
       player.play
     end  
 
-    speeds = _get_speeds(players)
-    newroles = _get_new_roles(speeds)
+    speeds = _get_speeds_and_id(players)
+    newroles = _set_new_roles(speeds)
 
-    #_create_players(newroles)
-
-    puts "********* New Run ********"     
-
+    _create_players(newroles, numplayer)
+   
 end
     
   end  
@@ -47,26 +47,53 @@ end
     @players
   end  
 
-  def _get_speeds(players)
+  def _get_speeds_and_id(players)
     
     it_speed = players.map{|player| player.speed if player.is_a? It}.compact
+    it_id = players.map{|player| player.name if player.is_a? It}.compact
     goose_speed = players.map{|player| player.speed if player.is_a? Goose}.compact
-    
-    {it_speed: it_speed[0], goose_speed: goose_speed[0] }
+    goose_id = players.map{|player| player.name if player.is_a? Goose}.compact
+
+    {it_speed: it_speed[0], it_id: it_id[0], goose_speed: goose_speed[0], goose_id: goose_id[0] }
+  
   end  
 
-  def _get_new_roles speeds
+  def _set_new_roles speeds
+    
     if speeds[:it_speed] > speeds[:goose_speed]
-      puts " goose did not tag it"
-      { new_it: goose}
+      puts "goose did not tag it"
+
+      { new_it_id: speeds[:goose_id] }
     else
       puts "goose TAG the it!!!"
-      { new_it: it}
+      { new_it_id: speeds[:it_id] }
      end   
   end  
 
-  def _create_players newroles
-    @players = [ it.new(name: 1), goose.new(name: 2), player.new(name: 3), player.new(name: 4) ] 
+  def _create_players newroles, numplayer
+    playerstmp = (0..numplayer-1).map{|i| player.new(name: i)}
+    playerstmp[newroles[:new_it_id]] = it.new(name: newroles[:new_it_id])
+   
+    it_id = newroles[:new_it_id]
+    goose_id = (playerstmp[it_id].goose * numplayer).to_i
+
+    if it_id == goose_id
+      goose_id = _create_goose(goose_id, numplayer)
+      playerstmp[goose_id[:goose]] = goose.new(name: goose_id[:goose])
+    else
+      playerstmp[goose_id] = goose.new(name: goose_id)
+    end  
+
+    @players = playerstmp
   end  
 
+  def _create_goose(goose_id, numplayer)
+    if goose_id + 1 <= numplayer
+      { goose: goose_id + 1 }
+    else
+      { goose: goose_id -1 }
+    end 
+
+  end
+    
 end       
