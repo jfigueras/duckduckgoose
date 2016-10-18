@@ -18,13 +18,13 @@ attr_reader :it, :goose
 
   def _race it, goose
     if rand(10000)/1000>5 
-      it = it
-      goose = goose
+      #it = it
+      #goose = goose
       goose_tag_it = true 
       puts "*** The goose tag the it ***", ""
     else 
-      it = it
-      goose = goose
+      #it = it
+      #goose = goose
       goose_tag_it = false
       puts "*** The goose did not tag the it ***", ""
     end

@@ -10,6 +10,7 @@ class Game
   end
   
   def call
+
     init = _game_initializer
     _run_controller(init[:first_player], init[:num_players])
    
@@ -19,6 +20,7 @@ private
 attr_reader :run_controller
 
   def _run_controller(first_player, numplayer)
+    
     run_controller.new(
       player1: first_player,
       numplayer: numplayer
