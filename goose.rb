@@ -13,9 +13,7 @@ class Goose
   end
 
   def call
-      #goose = _be_the_goose(self)
-      #self
-  
+     
   end
 
   def introduction
@@ -27,13 +25,7 @@ class Goose
     puts "the goose runs at #{@speed}"
   end  
 
-  #def speed
-  #  speed
-  #end  
 
-  #def speed=(speed)
-  #  self.speed = speed
-  #end  
 
   private
   attr_reader  :strategy, :race, :gamerun, :num_players

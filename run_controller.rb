@@ -35,6 +35,7 @@ class RunController
     newroles = _set_new_roles(speeds)
 
     _create_players(newroles, numplayer)
+    _sort_players(speeds[:it_id], numplayer)
    
 end
     
@@ -77,23 +78,38 @@ end
     it_id = newroles[:new_it_id]
     goose_id = (playerstmp[it_id].goose * numplayer).to_i
 
-    if it_id == goose_id
-      goose_id = _create_goose(goose_id, numplayer)
-      playerstmp[goose_id[:goose]] = goose.new(name: goose_id[:goose])
-    else
-      playerstmp[goose_id] = goose.new(name: goose_id)
-    end  
-
+    goose_id = _compare_ids(it_id, goose_id, numplayer)
+    playerstmp[goose_id] = goose.new(name: goose_id)
+      
     @players = playerstmp
+    
   end  
 
-  def _create_goose(goose_id, numplayer)
-    if goose_id + 1 <= numplayer
-      { goose: goose_id + 1 }
+  def _compare_ids(it_id, goose_id, numplayer)
+    if it_id == goose_id
+      goose_id = _decide_goose(goose_id, numplayer)
     else
-      { goose: goose_id -1 }
+      goose_id
+    end  
+  end 
+
+  def _decide_goose(goose_id, numplayer)
+    if goose_id + 1 <= numplayer
+       goose_id + 1 
+    else
+       goose_id -1 
     end 
 
   end
+
+  def _sort_players(it_id, numplayers)
+  
+    if it_id != 0 
+      playerstmp1 = @players[it_id, numplayer]
+      playerstmp2 = @players[0, it_id]
+      @players = [ playerstmp1, playerstmp2 ].flatten
+    end
+  end  
+
     
 end       
