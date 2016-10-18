@@ -25,13 +25,10 @@ class Goose
     puts "the goose runs at #{@speed}"
   end  
 
-
-
   private
   attr_reader  :strategy, :race, :gamerun, :num_players
 
   def _be_the_goose(it)
-    
     puts "player #{it.name} is the #{it.role}"
     it
   end

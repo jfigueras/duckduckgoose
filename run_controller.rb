@@ -12,7 +12,8 @@ class RunController
     @player = Player,
     @it = It,
     @goose = Goose
-    @players = [ player.new(name: 0), it.new(name: 1), goose.new(name: 2), player.new(name: 3) ] 
+    #@players = [ player.new(name: 0), it.new(name: 1), goose.new(name: 2), player.new(name: 3) ] 
+    @players = _create_players player1, numplayer
   end
 
   def call
@@ -33,8 +34,7 @@ class RunController
 
     speeds = _get_speeds_and_id(players)
     newroles = _set_new_roles(speeds)
-
-    _create_players(newroles, numplayer)
+    _create_players(newroles[:new_it_id] , numplayer)
     _sort_players(speeds[:it_id], numplayer)
    
 end
@@ -49,14 +49,12 @@ end
   end  
 
   def _get_speeds_and_id(players)
-    
     it_speed = players.map{|player| player.speed if player.is_a? It}.compact
     it_id = players.map{|player| player.name if player.is_a? It}.compact
     goose_speed = players.map{|player| player.speed if player.is_a? Goose}.compact
     goose_id = players.map{|player| player.name if player.is_a? Goose}.compact
 
     {it_speed: it_speed[0], it_id: it_id[0], goose_speed: goose_speed[0], goose_id: goose_id[0] }
-  
   end  
 
   def _set_new_roles speeds
@@ -71,14 +69,13 @@ end
      end   
   end  
 
-  def _create_players newroles, numplayer
+  def _create_players newit, numplayer
     playerstmp = (0..numplayer-1).map{|i| player.new(name: i)}
-    playerstmp[newroles[:new_it_id]] = it.new(name: newroles[:new_it_id])
+    playerstmp[newit] = it.new(name: newit)
    
-    it_id = newroles[:new_it_id]
-    goose_id = (playerstmp[it_id].goose * numplayer).to_i
+    goose_id = (playerstmp[newit].goose * numplayer).to_i
 
-    goose_id = _compare_ids(it_id, goose_id, numplayer)
+    goose_id = _compare_ids(newit, goose_id, numplayer)
     playerstmp[goose_id] = goose.new(name: goose_id)
       
     @players = playerstmp
@@ -99,11 +96,9 @@ end
     else
        goose_id -1 
     end 
-
   end
 
   def _sort_players(it_id, numplayers)
-  
     if it_id != 0 
       playerstmp1 = @players[it_id, numplayer]
       playerstmp2 = @players[0, it_id]
