@@ -1,17 +1,25 @@
-require_relative 'strategy'
-require_relative 'race'
-
 
 class Player
 
   attr_reader
 
-  def initialize(player_id: id , name: name)
+  def initialize(name: name)
 
-    @player_id
     @name = name
-   
+    @speed = 0
   end
+
+  def introduction
+
+  end  
+
+  def play
+
+  end
+  
+  def speed
+
+  end  
 
   
 end  

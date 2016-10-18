@@ -1,7 +1,9 @@
 require_relative 'Player'
 require_relative 'initializer.rb'
 require_relative 'run_controller'
-
+require_relative 'it'
+require_relative 'goose'
+require 'byebug'
 
 class Game
 
@@ -20,7 +22,7 @@ private
 attr_reader :run_controller
 
   def _run_controller(first_player, numplayer)
-    
+
     run_controller.new(
       player1: first_player,
       numplayer: numplayer
