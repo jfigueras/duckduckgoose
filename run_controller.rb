@@ -15,7 +15,7 @@ class RunController
 
   def call
     
-    (1..25).each do |i|
+    (1..30).each do |i|
       puts "********* begining round #{i} ********" 
       players = _get_players
 
@@ -45,24 +45,24 @@ class RunController
   end  
 
   def _get_speeds_and_id(players)
+
     it = players.map{|player| {it_id: player.name, it_speed: player.speed } if player.is_a? It}.compact
-    goose = players.map{|player| {goose_speed: player.speed, goose_id: player.name, goose_ayuke: player.ayuke_arm } if player.is_a? Goose}.compact
+    goose = players.map{|player| {goose_speed: player.speed, goose_id: player.name, goose_gun: player.gun } if player.is_a? Goose}.compact
     
     {it_speed: it.first[:it_speed],
      it_id: it.first[:it_id], 
      goose_speed: goose.first[:goose_speed], 
      goose_id: goose.first[:goose_id], 
-     goose_ayuke: goose.first[:goose_ayuke] }
+     goose_gun: goose.first[:goose_gun] }
   
   end  
 
   def _set_new_roles speeds
     if speeds[:it_speed] > speeds[:goose_speed]
-      if speeds[:goose_ayuke] == true
-
-        puts "Goose was losing the race, but luckily found the AYUKE ARM.."
-        puts "..the Goose shoot the It and the It got desoriented.."
-        puts "Goose end up sitting on his previous place"
+      if speeds[:goose_gun].arm_shooted == true
+        puts "Goose was losing the race, but luckily found the #{speeds[:goose_gun].name} arm!!"
+        puts "The Goose used the #{speeds[:goose_gun].name}, and the It #{speeds[:goose_gun].effect}"
+        puts "Goose passed the IT and end up sitting on his previous place"
          { new_it_id: speeds[:it_id] }
       else  
         puts "goose did not tag it"
