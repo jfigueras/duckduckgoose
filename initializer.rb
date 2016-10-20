@@ -1,14 +1,7 @@
-require 'byebug'
-
 
 class Initializer
 
   attr_reader :player
-
-  def initialize()
-   
-
-  end  
 
   def call
     num_players = _decide_number_of_players
@@ -16,7 +9,6 @@ class Initializer
     first_player = _decide_first_player(players)
 
     { num_players: num_players, first_player: first_player }
-  
   end  
 
   private

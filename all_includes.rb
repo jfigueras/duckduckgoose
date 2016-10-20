@@ -1,0 +1,6 @@
+require_relative 'Player'
+require_relative 'initializer.rb'
+require_relative 'run_controller'
+require_relative 'it'
+require_relative 'goose'
+require 'byebug'
