@@ -4,6 +4,7 @@ class Goose
 
   attr_reader :name, :speed
   attr_writer :speed
+  #attr_accessor :speed
 
   def initialize(name: name )
 
@@ -21,8 +22,8 @@ class Goose
   end 
 
   def play
-    @speed = rand()*10
-    puts "the goose runs at #{@speed.round(2)}"
+    speed = rand()*10
+    puts "the goose runs at #{speed.round(2)}"
   end  
 
   private

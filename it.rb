@@ -1,8 +1,8 @@
 
 class It 
 
-  attr_reader :name, :speed, :goose
-  attr_writer :speed 
+  attr_reader :name, :goose
+  attr_accessor :speed 
 
   def initialize(name: name )
 

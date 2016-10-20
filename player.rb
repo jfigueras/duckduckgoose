@@ -1,11 +1,11 @@
 
 class Player
 
-  attr_reader
+   attr_reader :name
 
   def initialize(name: name)
 
-    @name = name
+    @name = name,
     @speed = 0
   end
 

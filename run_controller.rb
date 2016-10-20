@@ -1,6 +1,3 @@
-
-
-
 class RunController
 
   attr_reader :player1, :numplayer, :it, :goose_id
@@ -13,17 +10,15 @@ class RunController
     @it = it_class,
     @goose = goose_class
     @players = _create_players player1, numplayer
-    #@players = [ player.new(name: 0), it.new(name: 1), goose.new(name: 2), player.new(name: 3) ] 
+   
   end
 
   def call
     
     (1..25).each do |i|
-      
-
       puts "********* begining round #{i} ********" 
-
       players = _get_players
+
       players.map do |player|
         player.introduction
       end  
@@ -36,9 +31,9 @@ class RunController
       newroles = _set_new_roles(speeds)
       _create_players(newroles[:new_it_id] , numplayer)
       _sort_players(speeds[:it_id], numplayer)
-     
     end
   end  
+
   
   private
   attr_reader  :player, :it, :goose, :players
@@ -69,7 +64,7 @@ class RunController
      end   
   end  
 
-  def _create_players newit, numplayer
+ def _create_players newit, numplayer
     playerstmp = (0..numplayer-1).map{|i| player.new(name: i)}
     playerstmp[newit] = it.new(name: newit)
    
@@ -77,7 +72,7 @@ class RunController
 
     goose_id = _compare_ids(newit, goose_id, numplayer)
     playerstmp[goose_id] = goose.new(name: goose_id)
-      
+    
     @players = playerstmp
     
   end  
@@ -88,9 +83,11 @@ class RunController
     else
       goose_id
     end  
+      goose_id
   end 
 
   def _decide_goose(goose_id, numplayer)
+
     if goose_id + 1 <= numplayer
        goose_id + 1 
     else
@@ -99,12 +96,10 @@ class RunController
   end
 
   def _sort_players(it_id, numplayers)
-    if it_id != 0 
+    if it_id != 0
       playerstmp1 = @players[it_id, numplayer]
       playerstmp2 = @players[0, it_id]
       players = [ playerstmp1, playerstmp2 ].flatten
     end
   end  
-
-    
 end       

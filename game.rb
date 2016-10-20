@@ -1,9 +1,4 @@
-require_relative 'Player'
-require_relative 'initializer.rb'
-require_relative 'run_controller'
-require_relative 'it'
-require_relative 'goose'
-require 'byebug'
+require_relative 'all_includes'
 
 class Game
 
@@ -32,6 +27,7 @@ attr_reader :run_controller, :initializer
   def _game_initializer
     initializer.call
   end  
+
 end
 
 Game.new.call
