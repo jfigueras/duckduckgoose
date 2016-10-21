@@ -1,4 +1,3 @@
-
 class Sitter < Player
 
   attr_reader :name

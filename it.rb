@@ -1,4 +1,3 @@
-
 class It < Player
 
   attr_reader :name, :goose
