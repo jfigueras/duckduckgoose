@@ -1,0 +1,31 @@
+require_relative 'arm'
+
+class Ayuke < Arm
+  
+  attr_reader :power
+
+  def call
+    shoot_the_arm
+  end  
+
+  def default_power
+    0.15
+  end
+
+  def shoot_the_arm
+    rand = rand()
+    if rand < power
+      self.arm_shooted = true
+    end 
+  end  
+
+  def default_name
+    "ayuke"
+  end  
+
+  def default_effect
+    "dizzyyy"
+  end  
+
+
+end

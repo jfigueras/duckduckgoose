@@ -1,25 +1,23 @@
 
 class Player
 
-   attr_reader :name
-
-  def initialize(name: name)
-
-    @name = name,
-    @speed = 0
+  def initialize(name: name_player)
+    @name = name
+    @speed = default_speed
+    post_initialize
   end
 
   def introduction
-
   end  
 
   def play
+  end
 
+  def default_speed
   end
   
-  def speed
-
+  def post_initialize
   end  
 
-  
+ 
 end  

@@ -1,31 +1,27 @@
 
 
-class Goose 
+class Goose < Player
 
-  attr_reader :name, :speed
-  attr_writer :speed
-  #attr_accessor :speed
+  attr_reader :name, :speed, :gun
+  attr_accessor :speed 
 
-  def initialize(name: name )
-
-    @name = name
-    @speed = 4
-  
-  end
-
-  def call
-     
-  end
+  def post_initialize
+    @gun = [ Ayuke.new, Kamehame.new, Doublehats.new ].sample
+  end  
 
   def introduction
     puts "player #{name} is the goose"
   end 
 
   def play
-    speed = rand()*10
+    self.speed = rand()*10
     puts "the goose runs at #{speed.round(2)}"
+    gun.call
+    
   end  
-
-  private
+  
+  def default_speed
+    4
+  end  
   
 end  
