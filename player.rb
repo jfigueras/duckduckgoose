@@ -1,5 +1,6 @@
 
 class Player
+  include Reload
 
   def initialize(name: name_player, energy: energy_player, arms: arms_player)
     @name = name

@@ -17,7 +17,7 @@ class RunController
 
   def call
     
-    (1..30).each do |i|
+    (1..100).each do |i|
       puts "********* begining round #{i} ********" 
       players = _get_players
       
@@ -63,13 +63,16 @@ class RunController
 
   def _set_new_roles speeds
     if speeds[:it_speed] > speeds[:goose_speed]
-      if speeds[:goose_gun].arm_shooted == true
+        
+      # byebug  
+       if (players[speeds[:goose_id]].arms.any? == true && players[speeds[:goose_id]].arms.first.arm_shooted == true) == true
         guns = players[speeds[:goose_id]].arms
         top_gun = guns.sort_by{|gun| gun.power}.first
         puts""
         puts "Goose was losing the race, but luckily used the #{top_gun.name} arm  @@@@@ ))))) !!"
 
-          if players[:it_speed].energy > players[:goose_speed].energy
+          if players[speeds[:it_id]].energy > top_gun.power
+
             puts "it has more energy than goose arm and survived the attack"
             puts "Goose did not tag the it"
              { new_it_id: speeds[:goose_id], new_it_energy: players[speeds[:goose_id]].energy  }
@@ -77,19 +80,16 @@ class RunController
           else  
             puts "it has less energy than goose attack and ...it has been tagged by goose"            
             { new_it_id: speeds[:it_id], new_it_energy: players[speeds[:it_id]].energy  }  
-
+          end  
     
-
-        #puts "Goose was losing the race, but luckily found the #{speeds[:goose_gun].name} arm!!"
-        #puts "The Goose used the #{speeds[:goose_gun].name}, and the It #{speeds[:goose_gun].effect}"
-        #puts "Goose passed the IT and end up sitting on his previous place"
          { new_it_id: speeds[:it_id], new_it_energy: players[speeds[:it_id]].energy  }
       else  
         puts""
         puts "goose did not tag it"
          { new_it_id: speeds[:goose_id], new_it_energy: players[speeds[:goose_id]].energy  }
       end
-     
+
+         
     else
       puts ""
       puts "goose TAG the it!!!"

@@ -8,7 +8,6 @@ class It < Player
   end  
 
   def introduction
-    
     puts "player #{name} is the IT"
     puts "It has energy #{self.energy} energy"
   end  

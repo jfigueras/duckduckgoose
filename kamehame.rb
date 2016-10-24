@@ -16,7 +16,6 @@ class Kamehame < Arm
   def shoot_the_arm
     rand = rand()
     if rand < power
-      puts "#{self.name} shooted"
       self.arm_shooted = true
     end 
   end  
