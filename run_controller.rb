@@ -33,7 +33,7 @@ class RunController
 
       speeds = _get_speeds_and_id(players)
       newroles = _set_new_roles(speeds)
-      _create_players(newroles[:new_it_id], newroles[:new_it_energy]  , numplayer)
+      _create_players(newroles[:new_it_id], newroles[:new_it_energy] , numplayer)
       _sort_players(speeds[:it_id], numplayer)
       puts ''
     end
@@ -67,7 +67,16 @@ class RunController
         guns = players[speeds[:goose_id]].arms
         top_gun = guns.sort_by{|gun| gun.power}.first
         puts""
-        puts "Goose was losing the race, but luckily used the #{top_gun.name} arm!!"
+        puts "Goose was losing the race, but luckily used the #{top_gun.name} arm  @@@@@ ))))) !!"
+
+          if players[:it_speed].energy > players[:goose_speed].energy
+            puts "it has more energy than goose arm and survived the attack"
+            puts "Goose did not tag the it"
+             { new_it_id: speeds[:goose_id], new_it_energy: players[speeds[:goose_id]].energy  }
+
+          else  
+            puts "it has less energy than goose attack and ...it has been tagged by goose"            
+            { new_it_id: speeds[:it_id], new_it_energy: players[speeds[:it_id]].energy  }  
 
     
 
