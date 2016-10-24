@@ -1,9 +1,11 @@
 
 class Player
 
-  def initialize(name: name_player)
+  def initialize(name: name_player, energy: energy_player, arms: arms_player)
     @name = name
     @speed = default_speed
+    @energy = energy || 0
+    @arms = arms || []
     post_initialize
   end
 

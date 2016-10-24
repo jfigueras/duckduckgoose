@@ -1,5 +1,7 @@
 class RunController
 
+  include Reload
+
   attr_reader :player1, :numplayer, :it, :goose_id
 
   def initialize( player1: player_1, numplayer: num_player, it_class: It, goose_class: Goose, sitter_class: Sitter )
@@ -9,7 +11,7 @@ class RunController
     @sitter = sitter_class
     @it = it_class
     @goose = goose_class
-    @players = _create_players player1, numplayer
+    @players = _create_players player1, 0 , numplayer
    
   end
 
@@ -18,18 +20,20 @@ class RunController
     (1..30).each do |i|
       puts "********* begining round #{i} ********" 
       players = _get_players
-
+      
       players.map do |player|
-        player.introduction
+       player.introduction
       end  
-     
+      
+      puts ""
+
       players.map do |player|
         player.play
       end  
 
       speeds = _get_speeds_and_id(players)
       newroles = _set_new_roles(speeds)
-      _create_players(newroles[:new_it_id] , numplayer)
+      _create_players(newroles[:new_it_id], newroles[:new_it_energy]  , numplayer)
       _sort_players(speeds[:it_id], numplayer)
       puts ''
     end
@@ -60,30 +64,52 @@ class RunController
   def _set_new_roles speeds
     if speeds[:it_speed] > speeds[:goose_speed]
       if speeds[:goose_gun].arm_shooted == true
-        puts "Goose was losing the race, but luckily found the #{speeds[:goose_gun].name} arm!!"
-        puts "The Goose used the #{speeds[:goose_gun].name}, and the It #{speeds[:goose_gun].effect}"
-        puts "Goose passed the IT and end up sitting on his previous place"
-         { new_it_id: speeds[:it_id] }
+        guns = players[speeds[:goose_id]].arms
+        top_gun = guns.sort_by{|gun| gun.power}.first
+        puts""
+        puts "Goose was losing the race, but luckily used the #{top_gun.name} arm!!"
+
+    
+
+        #puts "Goose was losing the race, but luckily found the #{speeds[:goose_gun].name} arm!!"
+        #puts "The Goose used the #{speeds[:goose_gun].name}, and the It #{speeds[:goose_gun].effect}"
+        #puts "Goose passed the IT and end up sitting on his previous place"
+         { new_it_id: speeds[:it_id], new_it_energy: players[speeds[:it_id]].energy  }
       else  
+        puts""
         puts "goose did not tag it"
-         { new_it_id: speeds[:goose_id] }
+         { new_it_id: speeds[:goose_id], new_it_energy: players[speeds[:goose_id]].energy  }
       end
      
     else
+      puts ""
       puts "goose TAG the it!!!"
-      { new_it_id: speeds[:it_id] }
+      { new_it_id: speeds[:it_id], new_it_energy: players[speeds[:it_id]].energy }
      end   
   end  
 
- def _create_players newit, numplayer
-    playerstmp = (0..numplayer-1).map{|i| sitter.new(name: i)}
-    playerstmp[newit] = it.new(name: newit)
-    goose_id = (playerstmp[newit].goose * numplayer).to_i
-    goose_id = _make_sure_it_doesnt_choose_himself(newit, goose_id, numplayer)
-    playerstmp[goose_id] = goose.new(name: goose_id)
+ def _create_players newit, new_it_energy, numplayer 
     
+    if players.nil?
+      playerstmp = (0..numplayer-1).map{|i| sitter.new(name: i, energy: 50, arms: [])}
+      playerstmp[newit] = it.new(name: newit, energy: 50 , arms: [])
+      goose_id = (playerstmp[newit].goose * numplayer).to_i
+      goose_id = _make_sure_it_doesnt_choose_himself(newit, goose_id, numplayer)
+      playerstmp[goose_id] = goose.new(name: goose_id, energy: 50,  arms: [] )
+      @players = playerstmp
+
+    else
+     
+      playerstmp = (0..numplayer-1).map{|i| sitter.new(name: i, energy: players[i].energy, arms: players[i].arms ) }
+      playerstmp[newit] = it.new(name: newit, energy: new_it_energy, arms: [] )
+      goose_id = (playerstmp[newit].goose * numplayer).to_i
+      goose_id = _make_sure_it_doesnt_choose_himself(newit, goose_id, numplayer)
+      playerstmp[goose_id] = goose.new(name: goose_id, energy: players[goose_id].energy, arms: players[goose_id].arms )
+   
+    end  
+
     @players = playerstmp
-    
+
   end  
 
   def _make_sure_it_doesnt_choose_himself(it_id, goose_id, numplayer)

@@ -1,7 +1,7 @@
 class Arm
 
   attr_reader :power, :arm_shooted, :name, :effect
-  attr_writer :arm_shooted
+  attr_writer :arm_shooted, :power
 
 
  def initialize

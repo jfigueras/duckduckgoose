@@ -9,12 +9,13 @@ class Ayuke < Arm
   end  
 
   def default_power
-    0.15
+    10
   end
 
   def shoot_the_arm
-    rand = rand()
+     rand = rand()
     if rand < power
+       puts "#{self.name} shooted"
       self.arm_shooted = true
     end 
   end  
