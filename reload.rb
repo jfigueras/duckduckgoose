@@ -1,7 +1,11 @@
 module Reload
 
-  def incrementby1
-    puts "This is the module reload in action!!!"
+  def increaseby increment, initial
+     initial + increment
   end  
 
+  def increaseby1 arg
+    arg = arg + 1
+  end
+    
 end

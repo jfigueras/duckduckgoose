@@ -1,10 +1,12 @@
 class It < Player
 
-  attr_reader :name, :goose
-  attr_accessor :speed, :energy, :arms 
+  attr_reader :name, :goose, :nplayer
+  attr_accessor :speed, :energy, :arms, :nplayer 
 
-  def post_initialize
-    @goose = rand()
+
+  def post_initialize(args) 
+    @nplayer = args[:nplayer]
+    @goose = _choose_goose
   end  
 
   def introduction
@@ -24,6 +26,14 @@ class It < Player
 
   
   private
+
+  def _choose_goose
+    players1 = Array(0..name-1)
+    players2 = Array(name+1..nplayer-1)
+    players = players1.concat(players2)
+    players = players.flatten
+    goose = players.sample/10    
+  end  
   
  
   

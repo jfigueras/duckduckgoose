@@ -1,6 +1,7 @@
 class RunController
 
   include Reload
+  include Colorea
 
   attr_reader :player1, :numplayer, :it, :goose_id
 
@@ -17,8 +18,12 @@ class RunController
 
   def call
     
-    (1..100).each do |i|
+    (1..20).each do |i|
+
+      random_color
       puts "********* begining round #{i} ********" 
+      reset_color
+      
       players = _get_players
       
       players.map do |player|
@@ -36,6 +41,7 @@ class RunController
       _create_players(newroles[:new_it_id], newroles[:new_it_energy] , numplayer)
       _sort_players(speeds[:it_id], numplayer)
       puts ''
+      
     end
   end  
 
@@ -64,35 +70,41 @@ class RunController
   def _set_new_roles speeds
     if speeds[:it_speed] > speeds[:goose_speed]
         
-      # byebug  
-       if (players[speeds[:goose_id]].arms.any? == true && players[speeds[:goose_id]].arms.first.arm_shooted == true) == true
+      if (players[speeds[:goose_id]].arms.any? == true && players[speeds[:goose_id]].arms.first.arm_shooted == true) == true
         guns = players[speeds[:goose_id]].arms
         top_gun = guns.sort_by{|gun| gun.power}.first
         puts""
         puts "Goose was losing the race, but luckily used the #{top_gun.name} arm  @@@@@ ))))) !!"
 
           if players[speeds[:it_id]].energy > top_gun.power
-
+            red_color
             puts "it has more energy than goose arm and survived the attack"
             puts "Goose did not tag the it"
+            reset_color 
              { new_it_id: speeds[:goose_id], new_it_energy: players[speeds[:goose_id]].energy  }
 
           else  
+            green_color
             puts "it has less energy than goose attack and ...it has been tagged by goose"            
+            reset_color  
             { new_it_id: speeds[:it_id], new_it_energy: players[speeds[:it_id]].energy  }  
           end  
     
          { new_it_id: speeds[:it_id], new_it_energy: players[speeds[:it_id]].energy  }
       else  
+        red_color
         puts""
         puts "goose did not tag it"
+        reset_color
          { new_it_id: speeds[:goose_id], new_it_energy: players[speeds[:goose_id]].energy  }
       end
 
          
     else
+      green_color
       puts ""
       puts "goose TAG the it!!!"
+      reset_color
       { new_it_id: speeds[:it_id], new_it_energy: players[speeds[:it_id]].energy }
      end   
   end  
@@ -101,7 +113,8 @@ class RunController
     
     if players.nil?
       playerstmp = (0..numplayer-1).map{|i| sitter.new(name: i, energy: 50, arms: [])}
-      playerstmp[newit] = it.new(name: newit, energy: 50 , arms: [])
+      playerstmp[newit] = it.new(name: newit, energy: 50 , arms: [], nplayer: numplayer)
+      
       goose_id = (playerstmp[newit].goose * numplayer).to_i
       goose_id = _make_sure_it_doesnt_choose_himself(newit, goose_id, numplayer)
       playerstmp[goose_id] = goose.new(name: goose_id, energy: 50,  arms: [] )
@@ -110,9 +123,9 @@ class RunController
     else
      
       playerstmp = (0..numplayer-1).map{|i| sitter.new(name: i, energy: players[i].energy, arms: players[i].arms ) }
-      playerstmp[newit] = it.new(name: newit, energy: new_it_energy, arms: [] )
+      playerstmp[newit] = it.new(name: newit, energy: new_it_energy, arms: [], nplayer: numplayer)
       goose_id = (playerstmp[newit].goose * numplayer).to_i
-      goose_id = _make_sure_it_doesnt_choose_himself(newit, goose_id, numplayer)
+      goose_id = _make_sure_it_doesnt_choose_himself(newit, goose_id, numplayer) 
       playerstmp[goose_id] = goose.new(name: goose_id, energy: players[goose_id].energy, arms: players[goose_id].arms )
    
     end  

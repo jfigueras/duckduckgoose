@@ -1,4 +1,5 @@
 require_relative 'reload'
+require_relative 'colorea'
 require_relative 'Player'
 require_relative 'initializer.rb'
 require_relative 'run_controller'

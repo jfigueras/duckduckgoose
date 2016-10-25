@@ -2,12 +2,12 @@
 class Player
   include Reload
 
-  def initialize(name: name_player, energy: energy_player, arms: arms_player)
-    @name = name
+  def initialize(args)
+    @name = args[:name]
     @speed = default_speed
     @energy = energy || 0
     @arms = arms || []
-    post_initialize
+    post_initialize args
   end
 
   def introduction
@@ -19,8 +19,7 @@ class Player
   def default_speed
   end
   
-  def post_initialize
+  def post_initialize nplayer
   end  
-
  
 end  
