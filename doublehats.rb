@@ -9,7 +9,7 @@ class Doublehats < Arm
   end  
 
   def default_power
-    0.5
+    5
   end
 
   def shoot_the_arm

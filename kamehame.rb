@@ -10,7 +10,7 @@ class Kamehame < Arm
   end  
 
   def default_power
-    0.15
+   25
   end
 
   def shoot_the_arm
