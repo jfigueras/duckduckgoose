@@ -10,6 +10,11 @@ require_relative 'arm'
 require_relative 'ayuke'
 require_relative 'kamehame'
 require_relative 'doublehats'
+require_relative 'player_factory'
+require_relative 'default_order'
+require_relative 'random_order'
+require_relative 'game_run'
+require_relative 'it_first_order'
 
 
 

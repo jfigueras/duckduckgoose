@@ -3,7 +3,7 @@ class Player
   include Reload
 
   def initialize(args)
-    @name = args[:name]
+    @name = args[:name] || 0
     @speed = default_speed
     @energy = energy || 0
     @arms = arms || []
