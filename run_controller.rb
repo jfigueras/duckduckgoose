@@ -5,7 +5,8 @@ class RunController
 
   attr_reader :player1, :numplayer, :it, :goose_id
 
-  def initialize( player1: player_1, numplayer: num_player, it_class: It, goose_class: Goose, sitter_class: Sitter )
+  def initialize( player1: player_1, numplayer: num_player, 
+                  it_class: It, goose_class: Goose, sitter_class: Sitter )
   
     @player1 = player1
     @numplayer = numplayer || 10
@@ -39,7 +40,6 @@ class RunController
       speeds = _get_speeds_and_id(players)
       newroles = _set_new_roles(speeds)
       _create_players(newroles[:new_it_id], newroles[:new_it_energy] , numplayer)
-      _sort_players(speeds[:it_id], numplayer)
       puts ''
       
     end
@@ -110,51 +110,19 @@ class RunController
   end  
 
  def _create_players newit, new_it_energy, numplayer 
+
+    players = (0..numplayer-1).to_a
+    players.delete(newit)
+    goose = players.sample 
+
+    config = (0..numplayer-1).map {|i| ["sitter", i ]}
+    config[newit] = ["it", newit, numplayer]
+    config[goose] = ["goose", goose]
     
-    if players.nil?
-      playerstmp = (0..numplayer-1).map{|i| sitter.new(name: i, energy: 50, arms: [])}
-      playerstmp[newit] = it.new(name: newit, energy: 50 , arms: [], nplayer: numplayer)
-      
-      goose_id = (playerstmp[newit].goose * numplayer).to_i
-      goose_id = _make_sure_it_doesnt_choose_himself(newit, goose_id, numplayer)
-      playerstmp[goose_id] = goose.new(name: goose_id, energy: 50,  arms: [] )
-      @players = playerstmp
+    game = GameRun.new(config: config)
 
-    else
-     
-      playerstmp = (0..numplayer-1).map{|i| sitter.new(name: i, energy: players[i].energy, arms: players[i].arms ) }
-      playerstmp[newit] = it.new(name: newit, energy: new_it_energy, arms: [], nplayer: numplayer)
-      goose_id = (playerstmp[newit].goose * numplayer).to_i
-      goose_id = _make_sure_it_doesnt_choose_himself(newit, goose_id, numplayer) 
-      playerstmp[goose_id] = goose.new(name: goose_id, energy: players[goose_id].energy, arms: players[goose_id].arms )
-   
-    end  
+    @players = game.players
 
-    @players = playerstmp
-
-  end  
-
-  def _make_sure_it_doesnt_choose_himself(it_id, goose_id, numplayer)
-    if it_id == goose_id
-      goose_id = _decide_goose(goose_id, numplayer)
-    else
-      goose_id
-    end  
-  end 
-
-  def _decide_goose(goose_id, numplayer)
-    if goose_id + 1 <= numplayer
-       goose_id + 1 
-    else
-       goose_id -1 
-    end 
-  end
-
-  def _sort_players(it_id, numplayers)
-    if it_id != 0
-      playerstmp1 = @players[it_id, numplayer]
-      playerstmp2 = @players[0, it_id]
-      players = [ playerstmp1, playerstmp2 ].flatten
-    end
-  end  
+end  
+ 
 end       

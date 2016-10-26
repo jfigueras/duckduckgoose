@@ -6,7 +6,7 @@ class It < Player
 
   def post_initialize(args) 
     @nplayer = args[:nplayer]
-    @goose = _choose_goose
+    
   end  
 
   def introduction
@@ -22,19 +22,5 @@ class It < Player
 
   def default_speed
     8
-  end  
-
-  
-  private
-
-  def _choose_goose
-    players1 = Array(0..name-1)
-    players2 = Array(name+1..nplayer-1)
-    players = players1.concat(players2)
-    players = players.flatten
-    goose = players.sample/10    
-  end  
-  
- 
-  
+  end    
 end  
